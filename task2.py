@@ -18,7 +18,7 @@ class MyTransform(beam.PTransform):
 
 with beam.Pipeline() as pipe:
   ip = (pipe
-      |"Reading the file from gs" >> beam.io.ReadFromText("/content/transactions.csv", skip_header_lines=True)
+      |"Reading the file from gs" >> beam.io.ReadFromText("gs://cloud-samples-data/bigquery/sample-transactions/transactions.csv", skip_header_lines=True)
       |"Applying my composite transform" >> MyTransform()
-      |"print the output" >> beam.Map(print)
+      |"writing output to csv file with the columns date and total_amount" >> beam.io.WriteToText("/output/results.csv", header=["date","total_amount"])
 )
